@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#181818">
+<title>Specter Wallet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{color-scheme:dark;--bg:#181818;--card:#222;--tile:#2a2a2a;--line:#2e2e2e;--t:#fff;--m:#999;--up:#2ec08b;--acc:#ab9ff2;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:#0d0d0d;color:var(--t);font:15px/1.35 Figtree,system-ui,sans-serif}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+button:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+.i{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.app{max-width:420px;min-height:100vh;margin:0 auto;background:var(--bg);padding:env(safe-area-inset-top,0) 16px calc(76px + env(safe-area-inset-bottom,0))}
+
+.top{display:flex;align-items:center;gap:10px;padding:14px 0 6px}
+.av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--acc),#6c5ce7);display:grid;place-items:center;font-weight:700;color:#181818}
+.who small{display:block;color:var(--m);font-size:12px}
+.who b{display:flex;align-items:center;gap:2px;font-size:16px}.who .i{width:16px;height:16px;color:var(--m)}
+.top .sp{flex:1}.top .ic{color:var(--m);padding:6px}
+
+.bal{text-align:center;padding:14px 0 20px}
+.bal h1{margin:0;font-size:42px;line-height:1.1;font-weight:700;letter-spacing:-.02em}
+.chg{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:6px;color:var(--m);font-weight:600}
+.pill{background:rgba(46,192,139,.16);color:var(--up);border-radius:6px;padding:1px 7px}
+
+.acts{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.acts button{display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 4px 12px;background:var(--tile);border-radius:14px;color:var(--acc);font-size:13px;font-weight:600}
+.acts button span{color:var(--m)}
+.acts .dots{stroke-width:3}
+
+.promo{display:flex;align-items:center;gap:12px;margin:16px 0;padding:12px;background:var(--card);border-radius:14px}
+.promo .ic{width:36px;height:36px;border-radius:50%;background:rgba(171,159,242,.2);color:var(--acc);display:grid;place-items:center;flex:none}
+.promo p{flex:1;margin:0;font-weight:600}.promo .x{color:var(--m)}.promo .x .i{width:18px;height:18px}
+
+.tabs{display:flex;gap:20px;border-bottom:1px solid var(--line)}
+.tabs button{padding:10px 0;font-weight:700;font-size:16px;color:var(--m);border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--t);border-color:var(--t)}
+ul{list-style:none;margin:0;padding:0}
+.tok{display:flex;align-items:center;gap:12px;padding:12px 0}
+.coin{width:40px;height:40px;flex:none}
+.nm{flex:1}.nm b,.val b{display:block;font-size:16px}.nm small,.val small{color:var(--m);font-size:13px}
+.val{text-align:right}.val .up{color:var(--up);font-weight:600}.val .dn{color:#ff5c6c;font-weight:600}
+.empty{padding:48px 0;text-align:center;color:var(--m)}
+[hidden]{display:none!important}
+
+.bar{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:100%;max-width:420px;display:flex;justify-content:space-around;background:var(--bg);border-top:1px solid var(--line);padding:10px 8px calc(10px + env(safe-area-inset-bottom,0))}
+.bar button{color:var(--m);padding:6px 14px}.bar .on{color:var(--acc)}
+[data-go]{cursor:pointer}[role=link]:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:8px}
+.who{text-align:left}.av{cursor:pointer}
+.ph{display:flex;align-items:center;gap:8px;padding:14px 0 10px}.ph h2{margin:0;font-size:20px}.back{padding:6px;color:var(--t)}
+.card{background:var(--card);border-radius:14px;padding:16px;margin:12px 0}
+.card code{display:block;word-break:break-all;background:var(--tile);padding:10px;border-radius:10px;margin:8px 0 4px}
+label{display:block;color:var(--m);font-size:14px;margin:12px 0}
+input,select{display:block;width:100%;margin-top:6px;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--t);font:inherit}
+.btn{display:block;width:100%;padding:14px;border-radius:12px;background:var(--acc);color:#181818;font-weight:700;text-align:center;margin-top:12px}
+.btn.ghost{background:var(--tile);color:var(--t)}
+.e{color:#ff5c6c;min-height:1.3em;margin:6px 0}
+.spark{width:100%;height:120px;margin:8px 0}
+.px{display:flex;align-items:center;gap:12px}.big2{margin:0;font-size:32px;line-height:1.1;font-weight:700}
+.bar2{height:6px;border-radius:3px;background:var(--tile);margin-top:8px}.bar2 i{display:block;height:100%;border-radius:3px;background:var(--acc)}
+.acts.apps{grid-template-columns:repeat(3,1fr);margin:12px 0}
+.chips{display:flex;gap:8px;margin:8px 0}.chips button{padding:8px 14px;border-radius:20px;background:var(--tile);font-weight:600}
+.kv{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}.kv:last-child{border:0}.kv span:first-child{color:var(--m)}
+.tp{justify-content:space-between}.tt{display:flex;align-items:center;gap:8px;margin-right:auto}.tt .coin{width:32px;height:32px}.tt b{display:block;font-size:16px}.tt small{color:var(--m)}
+.follow{padding:8px 16px;border-radius:20px;background:var(--tile);font-weight:600}.follow.on{background:var(--acc);color:#181818}
+.hero{text-align:center;padding:10px 0 4px}.hp{font-size:48px;letter-spacing:-.02em}
+.up2{color:var(--up)}.dn2{color:#ff5c6c}.pill.neg{background:rgba(255,92,108,.16);color:#ff5c6c}
+.chart{display:block;width:100%;height:150px;margin:10px 0 6px}
+.rg{display:flex;justify-content:space-between;margin-bottom:16px}.rg button{padding:6px 12px;border-radius:16px;font-weight:600;color:var(--m)}.rg button[aria-selected=true]{background:var(--tile);color:var(--t)}
+.sec{margin:20px 0 4px;font-size:16px}
+.two{display:flex;padding-bottom:12px;border-bottom:1px solid var(--line)}.two>div{flex:1}.two b{display:block;font-size:18px;margin-top:2px}
+.spacer{height:84px}
+.cta{position:fixed;left:50%;transform:translateX(-50%);width:100%;max-width:420px;bottom:calc(58px + env(safe-area-inset-bottom,0px));display:flex;gap:10px;padding:10px 16px;background:var(--bg)}.cta .btn{margin:0;flex:1}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></symbol>
+  <symbol id="expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="recv" viewBox="0 0 24 24"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14"/></symbol>
+  <symbol id="send" viewBox="0 0 24 24"><path d="M21 3L3 10.5l7 3 3 7z"/></symbol>
+  <symbol id="sell" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><circle cx="12" cy="12" r="2.5"/></symbol>
+  <symbol id="more" viewBox="0 0 24 24"><path d="M5 12h.01M12 12h.01M19 12h.01"/></symbol>
+  <symbol id="star" viewBox="0 0 24 24"><path d="M12 3l2.5 6 6.5.5-5 4.3 1.6 6.4L12 16.8 6.4 20.2 8 13.8 3 9.5l6.5-.5z"/></symbol>
+  <symbol id="close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9H4z"/></symbol>
+  <symbol id="apps" viewBox="0 0 24 24"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></symbol>
+  <symbol id="swap" viewBox="0 0 24 24"><path d="M7 4v13m0 0l-3-3m3 3l3-3M17 20V7m0 0l-3 3m3-3l3 3"/></symbol>
+  <symbol id="clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
+  <defs><linearGradient id='sg' x1='0' y1='1' x2='1' y2='0'><stop offset='0' stop-color='#9945ff'/><stop offset='1' stop-color='#14f195'/></linearGradient></defs>
+  <symbol id='c-sol' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#111'/><g fill='url(#sg)'><polygon points='13,11.5 31,11.5 27,16 9,16'/><polygon points='9,17.8 27,17.8 31,22.3 13,22.3'/><polygon points='13,24.1 31,24.1 27,28.6 9,28.6'/></g></symbol>
+  <symbol id='c-eth' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#627eea'/><polygon points='20,8 12,20.4 20,24.4' fill='#fff' opacity='.6'/><polygon points='20,8 28,20.4 20,24.4' fill='#fff' opacity='.95'/><polygon points='12,22.4 20,26.4 20,32' fill='#fff' opacity='.6'/><polygon points='28,22.4 20,26.4 20,32' fill='#fff' opacity='.95'/></symbol>
+  <symbol id='c-pol' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#8247e5'/><path d='M10 20c0-5 6-5 10 0s10 5 10 0-6-5-10 0-10 5-10 0z' fill='none' stroke='#fff' stroke-width='3' stroke-linejoin='round'/></symbol>
+  <symbol id='c-btc' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#f7931a'/><text x='20' y='26.5' text-anchor='middle' font-size='20' font-weight='700' font-family='Arial,sans-serif' fill='#fff'>B</text><path d='M17.5 8.5v3M22.5 8.5v3M17.5 28.5v3M22.5 28.5v3' stroke='#fff' stroke-width='2' stroke-linecap='round'/></symbol>
+  <symbol id='c-usdc' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#2775ca'/><circle cx='20' cy='20' r='11' fill='none' stroke='#fff' stroke-width='2'/><text x='20' y='26' text-anchor='middle' font-size='16' font-weight='700' font-family='Arial,sans-serif' fill='#fff'>$</text></symbol>
+  <symbol id='c-usdt' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#26a17b'/><rect x='11' y='11' width='18' height='4' rx='1' fill='#fff'/><rect x='18' y='14' width='4' height='15' fill='#fff'/><ellipse cx='20' cy='19.5' rx='8' ry='2.4' fill='none' stroke='#26a17b' stroke-width='1.6'/></symbol>
+  <symbol id='c-doge' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#c2a633'/><text x='20' y='27' text-anchor='middle' font-size='20' font-weight='700' font-family='Arial,sans-serif' fill='#fff'>D</text><path d='M12 20h11' stroke='#fff' stroke-width='2.4'/></symbol>
+  <symbol id='c-link' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#2a5ada'/><polygon points='20,9 29.5,14.5 29.5,25.5 20,31 10.5,25.5 10.5,14.5' fill='#fff'/><polygon points='20,15 24.5,17.6 24.5,22.4 20,25 15.5,22.4 15.5,17.6' fill='#2a5ada'/></symbol>
+  <symbol id='c-avax' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#e84142'/><polygon points='20,10 31,29 25,29 20,20 15,29 9,29' fill='#fff'/></symbol>
+  <symbol id='c-bnb' viewBox='0 0 40 40'><circle cx='20' cy='20' r='20' fill='#f3ba2f'/><g fill='#111'><polygon points='20,15 25,20 20,25 15,20'/><polygon points='20,9 23,12 20,15 17,12'/><polygon points='20,25 23,28 20,31 17,28'/><polygon points='9,20 12,17 15,20 12,23'/><polygon points='25,20 28,17 31,20 28,23'/></g></symbol>
+  <symbol id="back" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></symbol>
+</svg>
+
+<div class="app">
+<div id="home">
+  <header class="top">
+    <button class="av" data-go="accounts" aria-label="Accounts">E</button>
+    <button class="who" data-go="accounts"><small>@ethantaubtrade</small><b>Ethan Taub <svg class="i"><use href="#down"/></svg></b></button>
+    <span class="sp"></span>
+    <button class="ic" aria-label="Search" data-go="search"><svg class="i"><use href="#search"/></svg></button>
+    <button class="ic" aria-label="Expand view" data-go="expand"><svg class="i"><use href="#expand"/></svg></button>
+  </header>
+
+  <section class="bal" aria-label="Balance">
+    <h1>$12,848.13</h1>
+    <div class="chg"><span>+$345.70</span><span class="pill">+2.76%</span></div>
+  </section>
+
+  <div class="acts">
+    <button data-go="receive"><svg class="i"><use href="#recv"/></svg><span>Receive</span></button>
+    <button data-go="send"><svg class="i"><use href="#send"/></svg><span>Send</span></button>
+    <button data-go="sell"><svg class="i"><use href="#sell"/></svg><span>Sell</span></button>
+    <button data-go="more"><svg class="i dots"><use href="#more"/></svg><span>More</span></button>
+  </div>
+
+  <aside class="promo" id="promo" data-go="staking" role="link" tabindex="0">
+    <span class="ic"><svg class="i"><use href="#star"/></svg></span>
+    <p>Earn up to 9% APY by staking your SOL</p>
+    <button class="x" id="dismiss" aria-label="Dismiss"><svg class="i"><use href="#close"/></svg></button>
+  </aside>
+
+  <div class="tabs" role="tablist">
+    <button role="tab" id="t-tokens" aria-selected="true" aria-controls="p-tokens">Tokens</button>
+    <button role="tab" id="t-nft" aria-selected="false" aria-controls="p-nft">Collectibles</button>
+  </div>
+
+  <ul id="p-tokens" role="tabpanel" aria-labelledby="t-tokens">
+    <li class="tok" data-go="token-sol" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-sol"/></svg><div class="nm"><b>Solana</b><small>23.71 SOL</small></div><div class="val"><b>$4,596.35</b><small class="up">+8.62%</small></div></li>
+    <li class="tok" data-go="token-eth" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-eth"/></svg><div class="nm"><b>Ethereum</b><small>1.83 ETH</small></div><div class="val"><b>$3,795.74</b><small class="up">+5.98%</small></div></li>
+    <li class="tok" data-go="token-pol" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-pol"/></svg><div class="nm"><b>Polygon</b><small>674.42 POL</small></div><div class="val"><b>$612.17</b><small class="up">+13.58%</small></div></li>
+    <li class="tok" data-go="token-btc" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-btc"/></svg><div class="nm"><b>Bitcoin</b><small>0.094 BTC</small></div><div class="val"><b>$3,461.88</b><small class="up">+4.06%</small></div></li>
+    <li class="tok" data-go="token-usdc" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-usdc"/></svg><div class="nm"><b>USD Coin</b><small>212.40 USDC</small></div><div class="val"><b>$212.40</b><small class="up">+0.01%</small></div></li>
+    <li class="tok" data-go="token-usdt" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-usdt"/></svg><div class="nm"><b>Tether</b><small>61.55 USDT</small></div><div class="val"><b>$61.55</b><small class="up">+0.02%</small></div></li>
+    <li class="tok" data-go="token-doge" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-doge"/></svg><div class="nm"><b>Dogecoin</b><small>238.75 DOGE</small></div><div class="val"><b>$38.20</b><small class="dn">-2.14%</small></div></li>
+    <li class="tok" data-go="token-link" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-link"/></svg><div class="nm"><b>Chainlink</b><small>2.01 LINK</small></div><div class="val"><b>$29.14</b><small class="up">+3.37%</small></div></li>
+    <li class="tok" data-go="token-avax" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-avax"/></svg><div class="nm"><b>Avalanche</b><small>0.78 AVAX</small></div><div class="val"><b>$23.45</b><small class="dn">-0.87%</small></div></li>
+    <li class="tok" data-go="token-bnb" role="link" tabindex="0"><svg class="coin" aria-hidden="true"><use href="#c-bnb"/></svg><div class="nm"><b>BNB</b><small>0.03 BNB</small></div><div class="val"><b>$17.25</b><small class="up">+1.12%</small></div></li>
+  </ul>
+  <div id="p-nft" role="tabpanel" aria-labelledby="t-nft" class="empty" hidden>No collectibles yet.</div>
+</div>
+<div id="view" hidden></div>
+</div>
+
+<nav class="bar" aria-label="Main">
+  <button class="on" aria-label="Home" data-go="home" aria-current="page"><svg class="i"><use href="#home"/></svg></button>
+  <button aria-label="Apps" data-go="apps"><svg class="i"><use href="#apps"/></svg></button>
+  <button aria-label="Swap" data-go="swap"><svg class="i"><use href="#swap"/></svg></button>
+  <button aria-label="Activity" data-go="activity"><svg class="i"><use href="#clock"/></svg></button>
+  <button aria-label="Explore" data-go="explore"><svg class="i"><use href="#search"/></svg></button>
+</nav>
+
+<script>
+const $=s=>document.querySelector(s);
+$('#dismiss').onclick=e=>{e.stopPropagation();$('#promo').remove()};
+document.querySelectorAll('[role=tab]').forEach(t=>t.onclick=()=>{
+  document.querySelectorAll('[role=tab]').forEach(x=>{const on=x===t;x.setAttribute('aria-selected',on);$('#'+x.getAttribute('aria-controls')).hidden=!on});
+});
+
+const G={sel:'sol',pend:null,fol:{}};
+const T=[['sol','Solana','SOL',23.71,4596.35,8.62],['eth','Ethereum','ETH',1.83,3795.74,5.98],['pol','Polygon','POL',674.42,612.17,13.58],['btc','Bitcoin','BTC',0.094,3461.88,4.06],['usdc','USD Coin','USDC',212.4,212.4,.01],['usdt','Tether','USDT',61.55,61.55,.02],['doge','Dogecoin','DOGE',238.75,38.2,-2.14],['link','Chainlink','LINK',2.01,29.14,3.37],['avax','Avalanche','AVAX',.78,23.45,-.87],['bnb','BNB','BNB',.03,17.25,1.12]].map(([id,name,sym,q,v,c])=>({id,name,sym,q,v,c,p:v/q}));
+const ADDR='spk3m9x2q7vt5b8n4c6d1f0h2j7l5r9w3y';
+const ACT=[{ty:'Received',id:'sol',amt:2.5,who:'spa91d3f08c5e27b64a1d90f3c7e82b45d6',time:'Today, 9:12 AM',st:'Confirmed'},{ty:'Sent',id:'eth',amt:0.2,who:'spc40b7e19d3a58f26c1e07b94d3a85f1c2e',time:'Yesterday',st:'Confirmed'},{ty:'Sent',id:'usdc',amt:50,who:'spd18e6a02b97c43f5d1a80e3b6c29f74a5b',time:'Oct 26',st:'Confirmed'},{ty:'Received',id:'btc',amt:0.004,who:'spe73f1c85a02d96b4e8c15a7f03d29b6e41',time:'Oct 24',st:'Confirmed'}];
+const sh=a=>a.slice(0,6)+'…'+a.slice(-4),tok=id=>T.find(t=>t.id==id);
+const usd=n=>'$'+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:n<1?4:2});
+const pc=c=>`<span class="${c<0?'dn':'up'}">${c>0?'+':''}${c.toFixed(2)}%</span>`;
+const logo=id=>`<svg class="coin" aria-hidden="true"><use href="#c-${id}"/></svg>`;
+const row=(g,id,a,b,c,d)=>`<div class="tok" data-go="${g}" tabindex="0" role="link">${id?logo(id):''}<div class="nm"><b>${a}</b><small>${b||''}</small></div><div class="val"><b>${c||''}</b><small>${d||''}</small></div></div>`;
+const tokRow=t=>row('token-'+t.id,t.id,t.name,`${t.q} ${t.sym}`,usd(t.v),pc(t.c));
+const opts=sel=>T.map(t=>`<option value="${t.id}"${t.id==sel?' selected':''}>${t.name}</option>`).join('');
+const H=t=>`<header class="ph"><button class="back" data-go="home" aria-label="Back"><svg class="i"><use href="#back"/></svg></button><h2>${t}</h2></header>`;
+const tile=(g,i,l)=>`<button data-go="${g}"><svg class="i"><use href="#${i}"/></svg><span>${l}</span></button>`;
+const kv=(a,b)=>`<div class="kv"><span>${a}</span><span>${b}</span></div>`;
+
+const RG=[['1H',.1],['1D',1],['1W',2.1],['1M',3.4],['YTD',7.2],['All',15]];
+const chart=(id,pct,r)=>{let s=[...id+r].reduce((a,x)=>a+x.charCodeAt(0),7),w=[],y=0;for(let i=0;i<40;i++){s=(s*9301+49297)%233280;y+=(s/233280-.5)*10;w.push(y+(pct>=0?1:-1)*i*.9)}
+ const lo=Math.min(...w),hi=Math.max(...w),pt=w.map((v,i)=>(i*7.6)+','+(112-(v-lo)/(hi-lo||1)*100));
+ return `<svg class="chart" viewBox="0 0 296 120" preserveAspectRatio="none" aria-hidden="true"><polyline points="${pt.join(' ')}" fill="none" stroke="${pct<0?'#ff5c6c':'#2ec08b'}" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg>`};
+const head=(t,i)=>{const pct=t.c*RG[i][1],d=t.p-t.p/(1+pct/100),n=pct<0;return `<h1 class="big2 hp">${usd(t.p).slice(1)}</h1><div class="chg"><span class="${n?'dn2':'up2'}">${n?'-':'+'}${usd(Math.abs(d))}</span><span class="pill${n?' neg':''}">${Math.abs(pct).toFixed(2)}%</span></div>`};
+const P={
+ receive:()=>H('Receive')+`<div class="card"><p class="m">Your address</p><code>${ADDR}</code><button class="btn" id="cp">Copy address</button></div>`,
+ send:()=>H('Send')+`<label>Token<select id="st">${opts(G.sel)}</select></label><label>To address<input id="to" placeholder="sp…" autocapitalize="off" autocorrect="off"></label><label>Amount<input id="am" inputmode="decimal"></label><p class="e" id="er"></p><button class="btn" id="nx">Next</button>`,
+ review:()=>{const p=G.pend;if(!p)return H('Review')+'<p class="empty">Nothing to review.</p>';return H('Review')+`<div class="card">${kv('To',sh(p.to))+kv('Amount',p.amt+' '+p.t.sym)+kv('Network fee (0.5%)',+(p.amt*.005).toFixed(6)+' '+p.t.sym)}</div><button class="btn" id="cf">Confirm send</button><button class="btn ghost" data-go="send">Edit</button>`},
+ sell:()=>H('Sell')+'<p class="m">Choose a token to sell</p>'+T.map(tokRow).join(''),
+ more:()=>H('More')+[['Stake','staking'],['Swap','swap'],['Activity','activity'],['Explore','explore'],['Settings','settings']].map(([l,g])=>row(g,'',l,'','›')).join(''),
+ settings:()=>H('Settings')+['Security','Notifications','Currency','Network','Help'].map(l=>row('soon-'+l,'',l,'','›')).join(''),
+ staking:()=>H('Stake SOL')+`<div class="card"><h1 class="big2">Up to 9% APY</h1><p class="m">Choose a validator to stake your SOL with.</p></div>`+[['Meadow Validator','8.4%'],['Harbor Stake','8.9%'],['Pine Node','9.0%']].map(([n,a])=>row('soon-Stake','',n,'Validator',a,'APY')).join('')+`<button class="btn" data-go="soon-Stake">Stake SOL</button>`,
+ accounts:()=>H('Accounts')+row('home','','Ethan Taub',sh(ADDR),'✓')+row('home','','Account 2','sp7q2k…9d1c')+row('soon-Add account','','Add account','','+'),
+ search:()=>H('Search')+`<input id="q" placeholder="Search tokens" autocomplete="off"><div id="rs">${T.map(tokRow).join('')}</div>`,
+ expand:()=>{const tot=T.reduce((s,t)=>s+t.v,0);return H('Portfolio')+[...T].sort((a,b)=>b.v-a.v).map(t=>{const s=t.v/tot*100;return `<div class="tok" data-go="token-${t.id}" tabindex="0" role="link">${logo(t.id)}<div class="nm"><b>${t.name}</b><div class="bar2"><i style="width:${s}%"></i></div></div><div class="val"><b>${s.toFixed(1)}%</b></div></div>`}).join('')},
+ apps:()=>H('Apps')+`<div class="acts apps">${tile('swap','swap','Swap')+tile('staking','star','Stake')+tile('soon-Bridge','apps','Bridge')+tile('soon-Buy','sell','Buy')+tile('explore','search','Explore')+tile('settings','more','Settings')}</div>`,
+ swap:()=>H('Swap')+`<label>From<select id="fa">${opts('sol')}</select></label><label>To<select id="fb">${opts('usdc')}</select></label><label>Amount<input id="fx" inputmode="decimal"></label><p class="m" id="fe">Enter an amount to see an estimate.</p><button class="btn" data-go="soon-Swap">Review swap</button>`,
+ activity:()=>H('Activity')+ACT.map((a,i)=>row('tx-'+i,a.id,`${a.ty} ${tok(a.id).sym}`,a.time,(a.ty=='Received'?'+':'-')+a.amt,a.st)).join(''),
+ tx:i=>{const a=ACT[i];if(!a)return H('Activity')+'<p class="empty">Not found.</p>';return H(a.ty)+`<div class="card">${kv('Amount',a.amt+' '+tok(a.id).sym)+kv(a.ty=='Received'?'From':'To',sh(a.who))+kv('Status',a.st)+kv('Time',a.time)}</div>`},
+ explore:()=>H('Explore')+`<div class="chips">${['Trending','New','Gainers'].map(c=>`<button data-go="soon-${c}">${c}</button>`).join('')}</div>`+[...T].sort((a,b)=>b.c-a.c).map(tokRow).join(''),
+ token:id=>{const t=tok(id);if(!t)return H('Token')+'<p class="empty">Not found.</p>';G.sel=t.id;const ret=t.v-t.v/(1+t.c/100),f=G.fol[t.id];
+  return `<header class="ph tp"><button class="back" data-go="home" aria-label="Back"><svg class="i"><use href="#back"/></svg></button><div class="tt">${logo(t.id)}<div><b>${t.name}</b><small>${t.sym}</small></div></div><button class="follow${f?' on':''}" id="fl">${f?'Following':'Follow'}</button></header>
+<div class="hero" id="hd">${head(t,1)}</div><div id="ch">${chart(t.id,t.c,'1D')}</div>
+<div class="rg" role="tablist">${RG.map((r,i)=>`<button role="tab" data-r="${i}" aria-selected="${i==1}">${r[0]}</button>`).join('')}</div>
+<div class="acts">${tile('receive','recv','Receive')+tile('send','send','Send')+tile('sell','sell','Sell')+tile('more','more','More')}</div>
+<h3 class="sec">Your Position</h3><div class="card"><div class="two"><div><small class="m">Balance</small><b>${t.q}</b></div><div><small class="m">Value</small><b>${usd(t.v)}</b></div></div><div class="kv"><span>24h Return</span><span class="${ret<0?'dn2':'up2'}">${ret<0?'-':'+'}${usd(Math.abs(ret))}</span></div></div>
+<div class="spacer"></div><div class="cta"><button class="btn" data-go="soon-Buy">Buy</button><button class="btn ghost" data-go="sell">Sell</button></div>`},
+ soon:l=>H(l)+'<p class="empty">Nothing here yet.</p>'
+};
+const B={
+ receive:()=>{$('#cp').onclick=e=>{navigator.clipboard&&navigator.clipboard.writeText(ADDR);e.target.textContent='Copied'}},
+ send:()=>{$('#nx').onclick=()=>{const t=tok($('#st').value),to=$('#to').value.trim().toLowerCase(),a=parseFloat($('#am').value),er=m=>$('#er').textContent=m;
+  if(!/^sp[0-9a-z]{32}$/.test(to))return er('Enter a valid address: sp followed by 32 letters or numbers.');
+  if(!(a>0))return er('Enter an amount above zero.');
+  if(a*1.005>t.q)return er(`Not enough ${t.sym} to cover the amount and fee.`);
+  G.pend={t,amt:a,to};go('review')}},
+ review:()=>{const b=$('#cf');if(b)b.onclick=()=>{const p=G.pend;ACT.unshift({ty:'Sent',id:p.t.id,amt:p.amt,who:p.to,time:'Just now',st:'Pending'});G.pend=null;go('activity')}},
+ search:()=>{$('#q').oninput=e=>{const v=e.target.value.toLowerCase();$('#rs').innerHTML=T.filter(t=>(t.name+t.sym).toLowerCase().includes(v)).map(tokRow).join('')||'<p class="empty">No tokens found.</p>'}},
+ token:()=>{const t=tok(G.sel);if(!t||!$('#fl'))return;
+  $('#fl').onclick=e=>{const f=G.fol[t.id]=!G.fol[t.id];e.target.textContent=f?'Following':'Follow';e.target.classList.toggle('on',f)};
+  document.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{const i=+b.dataset.r;$('#hd').innerHTML=head(t,i);$('#ch').innerHTML=chart(t.id,t.c*RG[i][1],RG[i][0]);document.querySelectorAll('[data-r]').forEach(x=>x.setAttribute('aria-selected',x==b))})},
+ swap:()=>{const u=()=>{const a=tok($('#fa').value),b=tok($('#fb').value),x=parseFloat($('#fx').value);$('#fe').textContent=x>0?'≈ '+(x*a.p/b.p).toLocaleString(undefined,{maximumFractionDigits:6})+' '+b.sym:'Enter an amount to see an estimate.'};['#fa','#fb','#fx'].forEach(q=>$(q).oninput=u)}
+};
+const go=r=>{location.hash=r=='home'?'':r};
+function route(){const r=decodeURIComponent(location.hash.slice(1))||'home',i=r.indexOf('-'),k=i<0?r:r.slice(0,i),a=i<0?'':r.slice(i+1),h=r=='home';
+ $('#home').hidden=!h;$('#view').hidden=h;
+ if(!h){$('#view').innerHTML=(P[k]||P.soon)(P[k]?a:r);B[k]&&B[k]()}
+ document.querySelectorAll('.bar button').forEach(b=>{const on=b.dataset.go==(k=='tx'?'activity':k=='token'?'home':r);b.classList.toggle('on',on);on?b.setAttribute('aria-current','page'):b.removeAttribute('aria-current')});
+ scrollTo(0,0)}
+document.addEventListener('click',e=>{const el=e.target.closest('[data-go]');if(el)go(el.dataset.go)});
+document.addEventListener('keydown',e=>{if((e.key=='Enter'||e.key==' ')&&e.target.matches('[role=link]')){e.preventDefault();go(e.target.dataset.go)}});
+addEventListener('hashchange',route);route();
+</script>
+</body>
+</html>
